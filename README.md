@@ -1,2 +1,0 @@
-# pixelizer
-Pixelizes images
