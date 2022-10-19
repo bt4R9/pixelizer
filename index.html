@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pixelizer</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 30px;
+
+        background: rgba(0,0,0, 0.05);
+      }
+
+      html {
+        background: repeating-conic-gradient(#c9c9c9 0% 25%, transparent 0% 50%) 50% / 40px 40px
+      }
+
+      .canvas {
+        z-index: 10;
+
+        position: absolute;
+
+        left: 50%;
+        top: 50%;
+
+        display: none;
+
+        transform: translate3d(-50%, -50%, 0);
+
+        border: 2px dashed rgb(80, 0, 0);
+
+        transition: opacity 200ms, filter 200ms;
+      }
+
+      .canvas.active {
+        display: block;
+      }
+
+      .canvas.progress {
+        opacity: 0.8;
+        filter: blur(4px);
+      }
+
+      .helper {
+        display: none;
+      }
+
+      .close {
+        z-index: 12;
+
+        position: fixed;
+
+        display: none;
+        justify-content: center;
+        align-items: center;
+
+        top: 20px;
+        right: 20px;
+
+        width: 50px;
+        height: 50px;
+
+        border-radius: 50%;
+
+        background: rgba(0, 0, 0, 0.8);
+
+        cursor: pointer;
+      }
+
+      .close.active {
+        display: flex;
+      }
+
+      .download {
+        position: absolute;
+        z-index: 12;
+        display: none;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 14px;
+        border-radius: 5px;
+        border: 0;
+        background: rgba(0, 0, 0, 0.95);
+        color: #fff;
+        padding: 12px;
+        cursor: pointer;
+      }
+
+      .download.active {
+        display: flex;
+      }
+
+      .drop {
+        z-index: 11;
+
+        position: absolute;
+        display: none;
+
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-direction: column;
+
+        inset: 40px;
+
+        border-radius: 40px;
+
+        border: 10px rgb(136, 136, 136) dashed;
+      }
+
+      .extensions {
+        color:rgb(88, 88, 88);
+        font-size: 20px;
+      }
+
+      .drop.over {
+        background: rgba(129, 129, 129, 0.5);
+        color: #fff;
+        border: 10px #000 dashed;
+      }
+
+      .drop.active {
+        display: flex;
+      }
+
+      .panel {
+        z-index: 12;
+        position: fixed;
+        box-sizing: border-box;
+
+        width: 300px;
+        height: 150px;
+
+        right: 20px;
+        bottom: 0;
+
+        padding: 30px;
+
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+
+        background: rgba(0, 0, 0, 0.75);
+        color: #fff;
+
+        font-size: 16px;
+      }
+
+      .panel input {
+        width: 100%;
+      }
+
+      .panel input[type=radio] {
+        width: 30px;
+        margin: 0;
+      }
+
+      .panel-line {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .pixelization {
+        display: flex;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas class="canvas" id="app"></canvas>
+    <canvas class="helper" id="helper"></canvas>
+    <div id="closer" class="close">
+      <svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="30px" height="30px"><path d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z"/></svg>
+    </div>
+    <button id="download" class="download">Download</button>
+    <div class="drop active" id="drop">
+      Drop an image
+      <span class="extensions">(*.png, *.jpg)</span>
+    </div>
+    <div class="panel">
+      <div class="panel-line">
+        <span>Pixel size</span>
+        <span id="pixel-size-value">1</span>
+      </div>
+      <input id="pixel-size" type="range" min="1" max="30" step="1" value="4" />
+      <br /><br />
+      <div class="panel-line">
+        <span>Image size</span>
+        <span id="image-ratio-value">100%</span>
+      </div>
+      <input id="image-ratio" type="range" min="0.05" max="1" step="0.05" value="1" />
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
